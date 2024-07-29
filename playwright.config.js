@@ -12,6 +12,8 @@ import { defineConfig, devices } from '@playwright/test'
  */
 export default defineConfig({
   testDir: './e2e',
+  /* Run tests in files in parallel */
+  fullyParallel: true,  
   /* Maximum time one test can run for. */
   timeout: 30 * 1000,
   expect: {
@@ -34,13 +36,13 @@ export default defineConfig({
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:5173',
+    // baseURL: 'http://localhost:5173',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
 
     /* Only on CI systems run the tests headless */
-    headless: !!process.env.CI
+    // headless: !!process.env.CI
   },
 
   /* Configure projects for major browsers */
@@ -97,14 +99,14 @@ export default defineConfig({
   // outputDir: 'test-results/',
 
   /* Run your local dev server before starting the tests */
-  webServer: {
-    /**
-     * Use the dev server by default for faster feedback loop.
-     * Use the preview server on CI for more realistic testing.
-     * Playwright will re-use the local server if there is already a dev-server running.
-     */
-    command: process.env.CI ? 'vite preview --port 5173' : 'vite dev',
-    port: 5173,
-    reuseExistingServer: !process.env.CI
-  }
+  // webServer: {
+  //   /**
+  //    * Use the dev server by default for faster feedback loop.
+  //    * Use the preview server on CI for more realistic testing.
+  //    * Playwright will re-use the local server if there is already a dev-server running.
+  //    */
+  //   command: process.env.CI ? 'vite preview --port 5173' : 'vite dev',
+  //   port: 5173,
+  //   reuseExistingServer: !process.env.CI
+  // }
 })
