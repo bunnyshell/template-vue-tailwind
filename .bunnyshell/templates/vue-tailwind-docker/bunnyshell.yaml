@@ -2,7 +2,7 @@ kind: Environment
 name: vue-tailwind-docker
 type: primary
 environmentVariables:
-    VITE_APP_NAME: '{{env.unique}}'
+    VITE_APP_NAME: 'Bunnyshell Hello Vue'
 components:
     -
         kind: Application

@@ -4,7 +4,7 @@ type: primary
 urlHandle: jlhjuq
 environmentVariables:
     SAMPLE_VAR: '{{env.unique}}'
-    VITE_APP_NAME: 'Playwright Test'
+    VITE_APP_NAME: 'Bunnyshell Hello Vue'
 components:
     -
         kind: Application
