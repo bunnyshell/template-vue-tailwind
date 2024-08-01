@@ -13,7 +13,7 @@ components:
         dockerCompose:
             build:
                 context: .
-                dockerfile: Dockerfile
+                dockerfile: docker/app/Dockerfile
                 args:
                     VITE_APP_NAME: '{{env.vars.VITE_APP_NAME}}'
             ports:
