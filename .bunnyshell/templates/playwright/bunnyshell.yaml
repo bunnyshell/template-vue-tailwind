@@ -1,0 +1,52 @@
+kind: Environment
+name: playwright-e2e
+type: primary
+environmentVariables:
+    SAMPLE_VAR: '{{env.unique}}'
+    VITE_APP_NAME: 'Bunnyshell Hello Vue'
+components:
+    -
+        kind: Application
+        name: application
+        gitRepo: 'https://github.com/bunnyshell/template-vue-tailwind.git'
+        gitBranch: main
+        gitApplicationPath: /
+        dockerCompose:
+            build:
+                context: .
+                dockerfile: docker/app/Dockerfile
+                args:
+                    VITE_APP_NAME: '{{env.vars.VITE_APP_NAME}}'
+            ports:
+                - '3000:3000'
+        hosts:
+            -
+                hostname: 'vue-{{ env.base_domain }}'
+                path: /
+                servicePort: 3000
+    -
+        kind: Application
+        name: playwright
+        gitRepo: 'https://github.com/bunnyshell/template-vue-tailwind.git'
+        gitBranch: main
+        gitApplicationPath: /
+        dockerCompose:
+            build:
+                context: .
+                dockerfile: docker/playwright/Dockerfile
+            entrypoint: /bin/bash
+            command: '-c "npx playwright test; npx playwright show-report --host 0.0.0.0; sleep 3600"'
+            ports:
+                - 9323
+            environment:
+                CI: 'true'
+                PW_TEST_HTML_REPORT_OPEN: never
+                TEST_LOCAL_URL: 'http://{{ components.application.name }}:8080'
+                TEST_SECURE_URL: 'https://{{ components.application.ingress.hosts[0].url }}'
+        hosts:
+            -
+                hostname: 'playwright-{{ env.base_domain }}'
+                path: /
+                servicePort: 9323
+        dependsOn:
+            - application

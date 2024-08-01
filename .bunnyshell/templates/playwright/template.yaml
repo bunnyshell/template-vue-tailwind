@@ -1,0 +1,10 @@
+name: Playwright E2E Test
+description: 'Run Playwright E2E tests'
+tags: [ playwright, e2e, test, nodejs]
+icons: [ playwright]
+categories: [ 'testing automation' ]
+stack:
+  packages:
+    - name: playwright
+      version: '1.43.0'
+discoverable: true
