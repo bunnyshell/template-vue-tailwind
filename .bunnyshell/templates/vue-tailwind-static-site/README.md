@@ -13,7 +13,7 @@ Environment variables that start with `VITE_` are made available at build time a
 
 As an example, this template exposes `VITE_APP_NAME` at build time.
 
-## How to use this Template
+## How to use this Template 
 
 You can create Environments from a [Bunnyshell Template](https://documentation.bunnyshell.com/docs/templates-what-are-templates);
 
