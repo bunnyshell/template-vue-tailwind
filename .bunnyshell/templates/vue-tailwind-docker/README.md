@@ -93,6 +93,6 @@ The configuration differs based on the way you chose to work, and also on your I
 
 &nbsp;
 
-## Important Note
+## Important Note 
 
 You must change all passwords and review all parameters to ensure that your Environment is secure.
