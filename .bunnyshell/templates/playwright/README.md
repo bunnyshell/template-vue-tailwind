@@ -1,25 +1,36 @@
 # Template overview
 
-This Bunnyshell environment [template](https://documentation.bunnyshell.com/docs/templates-what-are-templates) is an example of how to run E2E tests with Playwright in Bunnyshell.
+This [Environment Template](https://documentation.bunnyshell.com/docs/templates-what-are-templates)
+runs Playwright end-to-end tests inside a Bunnyshell environment, next to the application
+they test.
 
-## Template specifics
+On every deploy and start:
 
-The template deploys a `node` container that runs Playwright tests from the `e2e` folder. 
+1. `application` (this Vue app) and `playwright` (the tests in `e2e/` and a report server) deploy.
+2. `e2e-tests` waits for both, then runs the suite inside the `playwright` pod, where internal
+   service addresses resolve.
+3. The HTML report is published at `https://playwright-<env domain>`, with a trace, screenshot
+   and video for each failure. `status.json` (pass/fail and counts) and `results.json` (the full
+   Playwright JSON report) are served next to it.
+4. If any test fails, the deploy fails. Set `E2E_BLOCKING` to `false` to only publish the report.
 
-The template also deploys a sample application (called `application`) to be tested by Playwright.
+For preview environments created from pull requests, a failed deploy is reported on the
+pull request, so broken changes are visible before they merge.
 
-After running the test, Playwright will serve the results.
+## Environment variables
 
-### Environment Variables
+| Variable | Default | Meaning |
+|---|---|---|
+| `VITE_APP_NAME` | `Bunnyshell Hello Vue` | Built into the app; the tests check that it is rendered. |
+| `E2E_BLOCKING` | `true` | Fail the deploy when tests fail. `false` only publishes the report. |
+| `PW_BROWSERS` | `chromium` | Comma-separated browsers: `chromium`, `firefox`, `webkit`. |
 
-Envrionment variables (`TEST_LOCAL_URL` , `TEST_SECURE_URL`) are used to pass the HTTP, HTTPS root urls of the appliction to be tested.
+The `playwright` component also sets `BASE_URL` (public URL), `TEST_LOCAL_URL` (in-cluster
+service URL), `WAIT_FOR_URLS` (URLs that must answer before tests start) and
+`EXPECTED_APP_NAME`.
 
-## How to use this Template
+# How to use this Template
 
-- Create Environments from this [Bunnyshell template](https://documentation.bunnyshell.com/docs/templates-what-are-templates);
-
-&nbsp;
-
-## Important Note
-
-You must change all passwords and review all parameters to ensure that your Environment is secure.
+Create an environment from this template, then add your tests to `e2e/` and replace the
+`application` component with your own. To use your own copy of this repo, point both
+components' `gitRepo` at it.
