@@ -30,19 +30,26 @@ npm run build
 
 ### Run End-to-End Tests with [Playwright](https://playwright.dev)
 
+The tests live in `e2e/` and run against `BASE_URL` (default `http://localhost:3000`).
+
 ```sh
-# Install browsers for the first run
-npx playwright install
+# Install Chromium for the first run
+npx playwright install --with-deps chromium
 
-# When testing on CI, must build the project first
-npm run build
-
-# Runs the end-to-end tests
+# Build and serve the app, then run the tests against it
+npm run build && npx serve -s dist &
 npm run test:e2e
-# Runs the tests only on Chromium
-npm run test:e2e -- --project=chromium
-# Runs the tests of a specific file
-npm run test:e2e -- tests/example.spec.ts
-# Runs the tests in debug mode
-npm run test:e2e -- --debug
+# Against another URL, or with more browsers
+BASE_URL=https://app.example.com PW_BROWSERS=chromium,firefox npm run test:e2e
 ```
+
+The same tests run in Docker, which is how the `playwright` Bunnyshell template runs them on
+every deploy (see `.bunnyshell/templates/playwright`):
+
+```sh
+docker build -t vue-e2e -f docker/playwright/Dockerfile .
+docker run --rm -e BASE_URL=https://app.example.com vue-e2e run   # exits with the test result
+```
+
+Playwright 1.65.1, `mcr.microsoft.com/playwright:v1.65.1-noble`. When upgrading, change the
+version in `package.json` and the image tag in `docker/playwright/Dockerfile` together.
